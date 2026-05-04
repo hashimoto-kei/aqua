@@ -2,6 +2,7 @@
 
 require_relative 'node_bin_op'
 require_relative 'node_int'
+require_relative 'node_unary_op'
 
 class Parser
   SYNTAX_ERROR = 'Syntax Error'
@@ -75,18 +76,24 @@ class Parser
   end
 
   # factor: int
+  #       | - factor
   #       | ( expr )
   def factor
     case @token[:type]
     in :int
       node = NodeInt.new(@token[:value])
+    in :-
+      op = @token[:type]
+      advance
+      node = factor
+      node = NodeUnaryOp.new(op, node)
     in :left_p
       advance
       node = expr
       advance
       syntax_error([:int, :right_p], @token)
     else
-      syntax_error([:int, :left_p], @token)
+      syntax_error([:int, :-, :left_p], @token)
     end
     node
   end
