@@ -33,17 +33,21 @@ class Parser
     end
   end
 
-  def syntax_error(expected_token_types, actual_token)
+  def syntax_assert(expected_token_types, actual_token)
     unless expected_token_types.include?(actual_token[:type])
-      raise "#{SYNTAX_ERROR}. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
+      syntax_error(expected_token_types, actual_token)
     end
+  end
+
+  def syntax_error(expected_token_types, actual_token)
+    raise "#{SYNTAX_ERROR}. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
   end
 
   # program: expr \n
   def program
     node = expr
     advance
-    syntax_error([:new_line, :eof], @token)
+    syntax_assert([:new_line, :eof], @token)
     node
   end
 
@@ -91,7 +95,7 @@ class Parser
       advance
       node = expr
       advance
-      syntax_error([:int, :right_p], @token)
+      syntax_assert([:int, :right_p], @token)
     else
       syntax_error([:int, :-, :left_p], @token)
     end
