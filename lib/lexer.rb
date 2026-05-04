@@ -20,11 +20,16 @@ class Lexer
       @token = {type: :left_p, value: nil}
     in /\)/
       @token = {type: :right_p, value: nil}
+    in /\=/
+      @token = {type: :equal, value: nil}
     in /\+|-|\*|\//
       @token = {type: c.to_sym, value: nil}
     in /\d/
       @input.ungetc(c)
       @token = {type: :int, value: lex_digit}
+    in /\w/
+      @input.ungetc(c)
+      @token = {type: :symbol, value: lex_symbol}
     end
   end
 
@@ -55,5 +60,20 @@ class Lexer
       end
     end
     n
+  end
+
+  def lex_symbol
+    symbol = []
+    loop do
+      c = @input.getc
+      case c
+      in /\w/
+        symbol << c
+      else
+        @input.ungetc(c)
+        break
+      end
+    end
+    symbol.join.to_sym
   end
 end

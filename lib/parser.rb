@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require_relative 'node_assing'
 require_relative 'node_bin_op'
 require_relative 'node_int'
+require_relative 'node_symbol'
 require_relative 'node_unary_op'
 
 class Parser
@@ -82,6 +84,8 @@ class Parser
   # factor: int
   #       | - factor
   #       | ( expr )
+  #       | symbol
+  #       | symbol = expr
   def factor
     case @token[:type]
     in :int
@@ -96,6 +100,13 @@ class Parser
       node = expr
       advance
       syntax_assert([:int, :right_p], @token)
+    in :symbol
+      node = NodeSymbol.new(@token[:value])
+      if [:equal].include?(@next_token[:type])
+        advance(2)
+        rhs = expr
+        node = NodeAssign.new(node, rhs)
+      end
     else
       syntax_error([:int, :-, :left_p], @token)
     end
