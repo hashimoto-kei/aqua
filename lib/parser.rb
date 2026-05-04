@@ -101,7 +101,7 @@ class Parser
       advance
       syntax_assert([:int, :right_p], @token)
     in :symbol
-      node = NodeSymbol.new(@token[:value])
+      node = NodeSymbol.intern(@token[:value])
       if [:equal].include?(@next_token[:type])
         advance(2)
         rhs = expr
