@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'node_assing'
+require_relative 'node_assign'
 require_relative 'node_bin_op'
 require_relative 'node_int'
 require_relative 'node_symbol'
