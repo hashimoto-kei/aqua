@@ -12,7 +12,7 @@ class Interpreter
   def execute
     while @parser.has_more_lines?
       node = @parser.parse
-      p node.eval
+      puts node.eval
     end
   ensure
     @lexer.close
