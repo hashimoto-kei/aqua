@@ -22,8 +22,18 @@ class Lexer
       @token = {type: :right_p, value: nil}
     in /\=/
       @token = {type: :equal, value: nil}
-    in /\+|-|\*|\//
+    in /\+|-|\*/
       @token = {type: c.to_sym, value: nil}
+    in /\//
+      c = @input.getc
+      case c
+      in /\//
+        skip_comment_line
+        advance
+      else
+        @input.ungetc(c)
+        @token = {type: '/'.to_sym, value: nil}
+      end
     in /\d/
       @input.ungetc(c)
       @token = {type: :int, value: lex_digit}
@@ -42,6 +52,14 @@ class Lexer
   def skip_white_spaces
     c = @input.getc
     while c !~ /\n/ && c =~ /\s/
+      c = @input.getc
+    end
+    @input.ungetc(c) unless c.nil?
+  end
+
+  def skip_comment_line
+    c = @input.getc
+    while c !~ /\n/
       c = @input.getc
     end
     @input.ungetc(c) unless c.nil?
