@@ -30,6 +30,9 @@ class Lexer
       in /\//
         skip_comment_line
         advance
+      in /\*/
+        skip_comment_lines
+        advance
       else
         @input.ungetc(c)
         @token = {type: '/'.to_sym, value: nil}
@@ -63,6 +66,18 @@ class Lexer
       c = @input.getc
     end
     @input.ungetc(c) unless c.nil?
+  end
+
+  def skip_comment_lines
+    loop do
+      c = @input.getc
+      if c =~ /\*/
+        c = @input.getc
+        if c =~ /\//
+          break
+        end
+      end
+    end
   end
 
   def lex_digit
