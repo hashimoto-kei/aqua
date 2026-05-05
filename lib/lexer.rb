@@ -40,6 +40,8 @@ class Lexer
     in /\d/
       @input.ungetc(c)
       @token = {type: :int, value: lex_digit}
+    in /"/
+      @token = {type: :string, value: lex_string}
     in /\w/
       @input.ungetc(c)
       @token = {type: :symbol, value: lex_symbol}
@@ -93,6 +95,19 @@ class Lexer
       end
     end
     n
+  end
+
+  def lex_string
+    s = []
+    loop do
+      c = @input.getc
+      break if c =~ /"/
+      if c =~ /\\/
+        c = @input.getc
+      end
+      s << c
+    end
+    s.join
   end
 
   def lex_symbol
