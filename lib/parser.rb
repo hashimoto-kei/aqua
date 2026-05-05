@@ -2,6 +2,7 @@
 
 require_relative 'node_assign'
 require_relative 'node_bin_op'
+require_relative 'node_empty'
 require_relative 'node_int'
 require_relative 'node_symbol'
 require_relative 'node_unary_op'
@@ -46,11 +47,21 @@ class Parser
   end
 
   # program: expr \n
+  #        | expr eof
+  #        | \n
+  #        | eof
   def program
-    node = expr
-    advance
-    syntax_assert([:new_line, :eof], @token)
-    node
+    case @token[:type]
+    in :new_line
+      node = NodeEmpty.new
+    in :eof
+      node = NodeEmpty.new
+    else
+      node = expr
+      advance
+      syntax_assert([:new_line, :eof], @token)
+      node
+    end
   end
 
   # expr: term
