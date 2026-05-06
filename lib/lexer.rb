@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Lexer
+  RESERVED_WORDS = [
+    :true,
+    :false,
+  ]
+
   attr_reader :token
 
   def initialize(path)
@@ -44,7 +49,9 @@ class Lexer
       @token = {type: :string, value: lex_string}
     in /\w/
       @input.ungetc(c)
-      @token = {type: :symbol, value: lex_symbol}
+      symbol = lex_symbol
+      type = RESERVED_WORDS.include?(symbol) ? symbol : :symbol
+      @token = {type: type, value: symbol}
     end
   end
 
