@@ -1,0 +1,3 @@
+price = 100
+number = 5
+total_price = price * number
