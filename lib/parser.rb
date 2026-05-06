@@ -4,6 +4,7 @@ require_relative 'node_assign'
 require_relative 'node_bin_op'
 require_relative 'node_empty'
 require_relative 'node_int'
+require_relative 'node_string'
 require_relative 'node_symbol'
 require_relative 'node_unary_op'
 
@@ -93,6 +94,7 @@ class Parser
   end
 
   # factor: int
+  #       | string
   #       | - factor
   #       | ( expr )
   #       | symbol
@@ -101,6 +103,8 @@ class Parser
     case @token[:type]
     in :int
       node = NodeInt.new(@token[:value])
+    in :string
+      node = NodeString.new(@token[:value])
     in :-
       op = @token[:type]
       advance
