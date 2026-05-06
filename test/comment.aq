@@ -1,0 +1,14 @@
+/*
+ * This is test script for comments.
+ */
+x = 12345679
+// same number
+x * 9 
+x * 18 
+x * 27
+x * 36
+x * 45
+x * 54
+x * 63
+x * 72
+x * 81
