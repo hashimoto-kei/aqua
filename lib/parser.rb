@@ -2,6 +2,7 @@
 
 require_relative 'node_assign'
 require_relative 'node_bin_op'
+require_relative 'node_bool'
 require_relative 'node_empty'
 require_relative 'node_int'
 require_relative 'node_string'
@@ -95,6 +96,8 @@ class Parser
 
   # factor: int
   #       | string
+  #       | true
+  #       | false
   #       | - factor
   #       | ( expr )
   #       | symbol
@@ -105,6 +108,10 @@ class Parser
       node = NodeInt.new(@token[:value])
     in :string
       node = NodeString.new(@token[:value])
+    in :true
+      node = NodeBool.new(@token[:value])
+    in :false
+      node = NodeBool.new(@token[:value])
     in :-
       op = @token[:type]
       advance
