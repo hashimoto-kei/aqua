@@ -27,6 +27,10 @@ class NodeBinOp
       lhs >= rhs
     in :gt
       lhs > rhs
+    in :le
+      lhs <= rhs
+    in :lt
+      lhs < rhs
     end
   end
 end

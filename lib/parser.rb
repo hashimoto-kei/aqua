@@ -71,9 +71,11 @@ class Parser
   #     | simple_expr != expr
   #     | simple_expr >= expr
   #     | simple_expr >  expr
+  #     | simple_expr <= expr
+  #     | simple_expr <  expr
   def expr
     node = simple_expr
-    if [:double_equal, :not_equal, :ge, :gt].include?(@next_token[:type])
+    if [:double_equal, :not_equal, :ge, :gt, :le, :lt].include?(@next_token[:type])
       op = @next_token[:type]
       advance(2)
       rhs = expr
