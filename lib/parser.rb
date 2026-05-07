@@ -148,8 +148,6 @@ class Parser
         rhs = expr
         node = NodeAssign.new(node, rhs)
       end
-    else
-      syntax_error([:int, :-, :left_p], @token)
     end
     node
   end
