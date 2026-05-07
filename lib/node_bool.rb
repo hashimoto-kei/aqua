@@ -6,6 +6,6 @@ class NodeBool
   end
 
   def eval
-    @value
+    @value == :true
   end
 end
