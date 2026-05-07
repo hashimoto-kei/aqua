@@ -43,6 +43,15 @@ class Lexer
         @input.ungetc(c)
         @token = {type: :not, value: nil}
       end
+    in />/
+      c = @input.getc
+      case c
+      in /\=/
+        @token = {type: :ge, value: nil}
+      else
+        @input.ungetc(c)
+        @token = {type: :gt, value: nil}
+      end
     in /\+|-|\*/
       @token = {type: c.to_sym, value: nil}
     in /\//
