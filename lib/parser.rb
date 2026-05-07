@@ -66,15 +66,28 @@ class Parser
     end
   end
 
-  # expr: term
-  #     | term + expr
-  #     | term - expr
+  # expr: simple_expr
+  #     | simple_expr == expr
   def expr
+    node = simple_expr
+    if [:double_equal].include?(@next_token[:type])
+      op = @next_token[:type]
+      advance(2)
+      rhs = expr
+      node = NodeBinOp.new(op, node, rhs)
+    end
+    node
+  end
+
+  # simple_expr: term
+  #            | term + simple_expr
+  #            | term - simple_expr
+  def simple_expr
     node = term
     if [:+, :-].include?(@next_token[:type])
       op = @next_token[:type]
       advance(2)
-      rhs = expr
+      rhs = simple_expr
       node = NodeBinOp.new(op, node, rhs)
     end
     node
