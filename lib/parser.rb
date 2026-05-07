@@ -68,9 +68,10 @@ class Parser
 
   # expr: simple_expr
   #     | simple_expr == expr
+  #     | simple_expr != expr
   def expr
     node = simple_expr
-    if [:double_equal].include?(@next_token[:type])
+    if [:double_equal, :not_equal].include?(@next_token[:type])
       op = @next_token[:type]
       advance(2)
       rhs = expr
@@ -112,6 +113,7 @@ class Parser
   #       | true
   #       | false
   #       | - factor
+  #       | ! factor
   #       | ( expr )
   #       | symbol
   #       | symbol = expr
@@ -125,7 +127,7 @@ class Parser
       node = NodeBool.new(@token[:value])
     in :false
       node = NodeBool.new(@token[:value])
-    in :-
+    in :- | :not
       op = @token[:type]
       advance
       node = factor

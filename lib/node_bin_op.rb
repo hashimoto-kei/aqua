@@ -21,6 +21,8 @@ class NodeBinOp
       lhs / rhs
     in :double_equal
       lhs == rhs
+    in :not_equal
+      lhs != rhs
     end
   end
 end

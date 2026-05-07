@@ -11,6 +11,8 @@ class NodeUnaryOp
     case @op
     in :-
       - operand
+    in :not
+      ! operand
     end
   end
 end
