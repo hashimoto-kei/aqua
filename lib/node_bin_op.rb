@@ -23,6 +23,10 @@ class NodeBinOp
       lhs == rhs
     in :not_equal
       lhs != rhs
+    in :ge
+      lhs >= rhs
+    in :gt
+      lhs > rhs
     end
   end
 end
