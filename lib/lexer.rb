@@ -26,7 +26,14 @@ class Lexer
     in /\)/
       @token = {type: :right_p, value: nil}
     in /\=/
-      @token = {type: :equal, value: nil}
+      c = @input.getc
+      case c
+      in /\=/
+        @token = {type: :double_equal, value: nil}
+      else
+        @input.ungetc(c)
+        @token = {type: :equal, value: nil}
+      end
     in /\+|-|\*/
       @token = {type: c.to_sym, value: nil}
     in /\//

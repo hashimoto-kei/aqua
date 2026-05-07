@@ -19,6 +19,8 @@ class NodeBinOp
       lhs * rhs
     in :/
       lhs / rhs
+    in :double_equal
+      lhs == rhs
     end
   end
 end
