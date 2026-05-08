@@ -10,8 +10,6 @@ require_relative 'node_symbol'
 require_relative 'node_unary_op'
 
 class Parser
-  SYNTAX_ERROR = 'Syntax Error'
-
   def initialize(lexer)
     @lexer = lexer
     @token = nil
@@ -45,7 +43,7 @@ class Parser
   end
 
   def syntax_error(expected_token_types, actual_token)
-    raise "#{SYNTAX_ERROR}. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
+    raise "Syntax Error. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
   end
 
   # program: expr \n
