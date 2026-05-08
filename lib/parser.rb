@@ -2,11 +2,12 @@
 
 require_relative 'node_assign'
 require_relative 'node_bin_op'
-require_relative 'node_bool'
 require_relative 'node_empty'
+require_relative 'node_false'
 require_relative 'node_int'
 require_relative 'node_string'
 require_relative 'node_symbol'
+require_relative 'node_true'
 require_relative 'node_unary_op'
 
 class Parser
@@ -128,9 +129,9 @@ class Parser
     in :string
       node = NodeString.new(@token[:value])
     in :true
-      node = NodeBool.new(@token[:value])
+      node = NodeTrue.instance
     in :false
-      node = NodeBool.new(@token[:value])
+      node = NodeFalse.instance
     in :- | :not
       op = @token[:type]
       advance
