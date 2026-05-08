@@ -61,6 +61,18 @@ class Lexer
         @input.ungetc(c)
         @token = {type: :lt, value: nil}
       end
+    in '&'
+      c = @input.getc
+      case c
+      in '&'
+        @token = {type: :and, value: nil}
+      end
+    in '|'
+      c = @input.getc
+      case c
+      in '|'
+        @token = {type: :or, value: nil}
+      end
     in '+' | '-' | '*'
       @token = {type: c.to_sym, value: nil}
     in '/'
