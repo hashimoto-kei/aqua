@@ -9,6 +9,12 @@ class NodeBinOp
 
   def eval
     lhs = @lhs.eval
+    if @op == :and && lhs == false
+      return false
+    end
+    if @op == :or && lhs == true
+      return true
+    end
     rhs = @rhs.eval
     case @op
     in :+
@@ -31,6 +37,10 @@ class NodeBinOp
       lhs <= rhs
     in :lt
       lhs < rhs
+    in :and
+      lhs && rhs
+    in :or
+      lhs || rhs
     end
   end
 end

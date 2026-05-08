@@ -85,9 +85,10 @@ class Parser
   # simple_expr: term
   #            | term + simple_expr
   #            | term - simple_expr
+  #            | term || simple_expr
   def simple_expr
     node = term
-    if [:+, :-].include?(@next_token[:type])
+    if [:+, :-, :or].include?(@next_token[:type])
       op = @next_token[:type]
       advance(2)
       rhs = simple_expr
@@ -99,9 +100,10 @@ class Parser
   # term: factor
   #     | factor * term
   #     | factor / term
+  #     | factor && term
   def term
     node = factor
-    if [:*, :/].include?(@next_token[:type])
+    if [:*, :/, :and].include?(@next_token[:type])
       op = @next_token[:type]
       advance(2)
       rhs = term
