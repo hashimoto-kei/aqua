@@ -19,57 +19,57 @@ class Lexer
     case c
     in nil
       @token = {type: :eof, value: nil}
-    in /\n/
+    in "\n"
       @token = {type: :new_line, value: nil}
-    in /\(/
+    in '('
       @token = {type: :left_p, value: nil}
-    in /\)/
+    in ')'
       @token = {type: :right_p, value: nil}
-    in /\=/
+    in '='
       c = @input.getc
       case c
-      in /\=/
+      in '='
         @token = {type: :double_equal, value: nil}
       else
         @input.ungetc(c)
         @token = {type: :equal, value: nil}
       end
-    in /\!/
+    in '!'
       c = @input.getc
       case c
-      in /\=/
+      in '='
         @token = {type: :not_equal, value: nil}
       else
         @input.ungetc(c)
         @token = {type: :not, value: nil}
       end
-    in />/
+    in '>'
       c = @input.getc
       case c
-      in /\=/
+      in '='
         @token = {type: :ge, value: nil}
       else
         @input.ungetc(c)
         @token = {type: :gt, value: nil}
       end
-    in /</
+    in '<'
       c = @input.getc
       case c
-      in /\=/
+      in '='
         @token = {type: :le, value: nil}
       else
         @input.ungetc(c)
         @token = {type: :lt, value: nil}
       end
-    in /\+|-|\*/
+    in '+' | '-' | '*'
       @token = {type: c.to_sym, value: nil}
-    in /\//
+    in '/'
       c = @input.getc
       case c
-      in /\//
+      in '/'
         skip_comment_line
         advance
-      in /\*/
+      in '*'
         skip_comment_lines
         advance
       else
@@ -79,7 +79,7 @@ class Lexer
     in /\d/
       @input.ungetc(c)
       @token = {type: :int, value: lex_digit}
-    in /"/
+    in '"'
       @token = {type: :string, value: lex_string}
     in /\w/
       @input.ungetc(c)
