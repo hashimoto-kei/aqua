@@ -84,9 +84,8 @@ class Parser
     syntax_assert([:left_p], @next_token)
     advance(2)
     _cond = expr
-    advance
-    syntax_assert([:right_p], @token)
-    advance
+    syntax_assert([:right_p], @next_token)
+    advance(2)
     _then = stmt
     _else = nil
     if [:else].include?(@next_token[:type])
