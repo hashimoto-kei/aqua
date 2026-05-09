@@ -12,7 +12,8 @@ class Interpreter
   def execute
     while @parser.has_more_lines?
       node = @parser.parse
-      puts node.eval
+      result = node.eval
+      puts result unless result.nil?
     end
   ensure
     @lexer.close
