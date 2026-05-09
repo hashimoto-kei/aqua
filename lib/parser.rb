@@ -4,6 +4,7 @@ require_relative 'node_assign'
 require_relative 'node_bin_op'
 require_relative 'node_empty'
 require_relative 'node_false'
+require_relative 'node_if_stmt'
 require_relative 'node_int'
 require_relative 'node_string'
 require_relative 'node_symbol'
@@ -47,8 +48,8 @@ class Parser
     raise "Syntax Error. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
   end
 
-  # program: expr \n
-  #        | expr eof
+  # program: stmt \n
+  #        | stmt eof
   #        | \n
   #        | eof
   def program
@@ -58,11 +59,41 @@ class Parser
     in :eof
       node = NodeEmpty.new
     else
-      node = expr
+      node = stmt
       advance
       syntax_assert([:new_line, :eof], @token)
       node
     end
+  end
+
+  # stmt: if_stmt
+  #     | expr
+  def stmt
+    case @token[:type]
+    in :if
+      node = if_stmt
+    else
+      node = expr
+    end
+  end
+
+  # if_stmt: if ( expr ) stmt
+  #        | if ( expr ) stmt else stmt
+  def if_stmt
+    syntax_assert([:if], @token)
+    syntax_assert([:left_p], @next_token)
+    advance(2)
+    _cond = expr
+    advance
+    syntax_assert([:right_p], @token)
+    advance
+    _then = stmt
+    _else = nil
+    if [:else].include?(@next_token[:type])
+      advance(2)
+      _else = stmt
+    end
+    node = NodeIfStmt.new(_cond, _then, _else)
   end
 
   # expr: simple_expr

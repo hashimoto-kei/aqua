@@ -4,6 +4,8 @@ class Lexer
   RESERVED_WORDS = [
     :true,
     :false,
+    :if,
+    :else,
   ]
 
   attr_reader :token
