@@ -28,7 +28,7 @@ class Lexer
       c = @input.getc
       case c
       in '='
-        @token = {type: :double_equal, value: nil}
+        @token = {type: :eq, value: nil}
       else
         @input.ungetc(c)
         @token = {type: :'=', value: nil}
@@ -37,7 +37,7 @@ class Lexer
       c = @input.getc
       case c
       in '='
-        @token = {type: :not_equal, value: nil}
+        @token = {type: :ne, value: nil}
       else
         @input.ungetc(c)
         @token = {type: :not, value: nil}
