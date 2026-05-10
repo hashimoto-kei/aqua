@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class NodeEmpty
-  def eval = ''
+  def eval = nil
 end
