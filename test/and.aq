@@ -1,0 +1,9 @@
+false && false
+false && true
+true && false
+true && true
+x = 0
+false && x = 1
+x
+true && x = 2
+x

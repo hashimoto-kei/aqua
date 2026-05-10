@@ -1,0 +1,4 @@
+x = 3
+if (x == 2) "x is 2"
+if (x == 3) "x is 3"
+if (x == 4) "x is 4" else "x is not 4"
