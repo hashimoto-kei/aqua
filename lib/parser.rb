@@ -56,14 +56,14 @@ class Parser
   #        | eof
   def program
     case @token[:type]
-    in :new_line
+    in :"\n"
       node = NodeEmpty.new
     in :eof
       node = NodeEmpty.new
     else
       node = stmt
       advance
-      syntax_assert([:new_line, :eof], @token)
+      syntax_assert([:"\n", :eof], @token)
       node
     end
   end
@@ -78,7 +78,7 @@ class Parser
       node = if_stmt
     in :while
       node = while_stmt
-    in :left_b
+    in :'{'
       node = block
     else
       node = expr
@@ -89,10 +89,10 @@ class Parser
   #        | if ( expr ) stmt else stmt
   def if_stmt
     syntax_assert([:if], @token)
-    syntax_assert([:left_p], @next_token)
+    syntax_assert([:'('], @next_token)
     advance(2)
     _cond = expr
-    syntax_assert([:right_p], @next_token)
+    syntax_assert([:')'], @next_token)
     advance(2)
     _then = stmt
     _else = nil
@@ -106,10 +106,10 @@ class Parser
   # while_stmt: while ( expr ) stmt
   def while_stmt
     syntax_assert([:while], @token)
-    syntax_assert([:left_p], @next_token)
+    syntax_assert([:'('], @next_token)
     advance(2)
     _cond = expr
-    syntax_assert([:right_p], @next_token)
+    syntax_assert([:')'], @next_token)
     advance(2)
     _then = stmt
     node = NodeWhileStmt.new(_cond, _then)
@@ -117,13 +117,13 @@ class Parser
 
   # block: { \n [stmt \n]* }
   def block
-    syntax_assert([:left_b], @token)
-    syntax_assert([:new_line], @next_token)
+    syntax_assert([:'{'], @token)
+    syntax_assert([:"\n"], @next_token)
     advance(2)
     stmts = []
-    until @token[:type] == :right_b
+    until @token[:type] == :'}'
       stmts << stmt
-      syntax_assert([:new_line], @next_token)
+      syntax_assert([:"\n"], @next_token)
       advance(2)
     end
     node = NodeBlock.new(stmts)
@@ -201,11 +201,11 @@ class Parser
       advance
       node = factor
       node = NodeUnaryOp.new(op, node)
-    in :left_p
+    in :'('
       advance
       node = expr
       advance
-      syntax_assert([:right_p], @token)
+      syntax_assert([:')'], @token)
     in :symbol
       node = NodeSymbol.intern(@token[:value])
       if [:equal].include?(@next_token[:type])
