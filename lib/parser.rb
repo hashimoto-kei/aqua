@@ -10,6 +10,7 @@ require_relative 'node_string'
 require_relative 'node_symbol'
 require_relative 'node_true'
 require_relative 'node_unary_op'
+require_relative 'node_while_stmt'
 
 class Parser
   def initialize(lexer)
@@ -67,11 +68,14 @@ class Parser
   end
 
   # stmt: if_stmt
+  #     | while_stmt
   #     | expr
   def stmt
     case @token[:type]
     in :if
       node = if_stmt
+    in :while
+      node = while_stmt
     else
       node = expr
     end
@@ -93,6 +97,18 @@ class Parser
       _else = stmt
     end
     node = NodeIfStmt.new(_cond, _then, _else)
+  end
+
+  # while_stmt: while ( expr ) stmt
+  def while_stmt
+    syntax_assert([:while], @token)
+    syntax_assert([:left_p], @next_token)
+    advance(2)
+    _cond = expr
+    syntax_assert([:right_p], @next_token)
+    advance(2)
+    _then = stmt
+    node = NodeWhileStmt.new(_cond, _then)
   end
 
   # expr: simple_expr

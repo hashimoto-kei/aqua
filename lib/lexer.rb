@@ -6,6 +6,7 @@ class Lexer
     :false,
     :if,
     :else,
+    :while,
   ]
 
   attr_reader :token
