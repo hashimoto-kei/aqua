@@ -93,8 +93,8 @@ class Lexer
     in /\w/
       @input.ungetc(c)
       symbol = lex_symbol
-      type = RESERVED_WORDS.include?(symbol) ? symbol : :symbol
-      @token = {type: type, value: symbol}
+      type, value = RESERVED_WORDS.include?(symbol) ? [symbol, nil] : [:symbol, symbol]
+      @token = {type: type, value: value}
     end
   end
 
