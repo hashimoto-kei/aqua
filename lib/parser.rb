@@ -196,7 +196,7 @@ class Parser
       node = NodeTrue.instance
     in :false
       node = NodeFalse.instance
-    in :- | :not
+    in :- | :!
       op = @token[:type]
       advance
       node = factor
