@@ -61,7 +61,6 @@ class Parser
       node = NodeEmpty.new
     else
       node = stmt
-      advance
       syntax_assert([:"\n", :eof], @token)
     end
     advance
@@ -92,12 +91,12 @@ class Parser
     syntax_assert([:'('], @next_token)
     advance(2)
     _cond = expr
-    syntax_assert([:')'], @next_token)
-    advance(2)
+    syntax_assert([:')'], @token)
+    advance
     _then = stmt
     _else = nil
-    if [:else].include?(@next_token[:type])
-      advance(2)
+    if [:else].include?(@token[:type])
+      advance
       _else = stmt
     end
     node = NodeIfStmt.new(_cond, _then, _else)
@@ -109,8 +108,8 @@ class Parser
     syntax_assert([:'('], @next_token)
     advance(2)
     _cond = expr
-    syntax_assert([:')'], @next_token)
-    advance(2)
+    syntax_assert([:')'], @token)
+    advance
     _then = stmt
     node = NodeWhileStmt.new(_cond, _then)
   end
@@ -123,9 +122,10 @@ class Parser
     stmts = []
     until @token[:type] == :'}'
       stmts << stmt
-      syntax_assert([:"\n"], @next_token)
-      advance(2)
+      syntax_assert([:"\n"], @token)
+      advance
     end
+    advance
     node = NodeBlock.new(stmts)
   end
 
@@ -138,9 +138,9 @@ class Parser
   #     | simple_expr <  expr
   def expr
     node = simple_expr
-    if [:eq, :ne, :ge, :gt, :le, :lt].include?(@next_token[:type])
-      op = @next_token[:type]
-      advance(2)
+    if [:eq, :ne, :ge, :gt, :le, :lt].include?(@token[:type])
+      op = @token[:type]
+      advance
       rhs = expr
       node = NodeBinOp.new(op, node, rhs)
     end
@@ -153,9 +153,9 @@ class Parser
   #            | term || simple_expr
   def simple_expr
     node = term
-    if [:+, :-, :or].include?(@next_token[:type])
-      op = @next_token[:type]
-      advance(2)
+    if [:+, :-, :or].include?(@token[:type])
+      op = @token[:type]
+      advance
       rhs = simple_expr
       node = NodeBinOp.new(op, node, rhs)
     end
@@ -168,9 +168,9 @@ class Parser
   #     | factor && term
   def term
     node = factor
-    if [:*, :/, :and].include?(@next_token[:type])
-      op = @next_token[:type]
-      advance(2)
+    if [:*, :/, :and].include?(@token[:type])
+      op = @token[:type]
+      advance
       rhs = term
       node = NodeBinOp.new(op, node, rhs)
     end
@@ -190,12 +190,16 @@ class Parser
     case @token[:type]
     in :int
       node = NodeInt.new(@token[:value])
+      advance
     in :string
       node = NodeString.new(@token[:value])
+      advance
     in :true
       node = NodeTrue.instance
+      advance
     in :false
       node = NodeFalse.instance
+      advance
     in :- | :!
       op = @token[:type]
       advance
@@ -204,12 +208,13 @@ class Parser
     in :'('
       advance
       node = expr
-      advance
       syntax_assert([:')'], @token)
+      advance
     in :symbol
       node = NodeSymbol.intern(@token[:value])
-      if [:'='].include?(@next_token[:type])
-        advance(2)
+      advance
+      if [:'='].include?(@token[:type])
+        advance
         rhs = expr
         node = NodeAssign.new(node, rhs)
       end
