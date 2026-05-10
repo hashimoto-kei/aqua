@@ -208,7 +208,7 @@ class Parser
       syntax_assert([:')'], @token)
     in :symbol
       node = NodeSymbol.intern(@token[:value])
-      if [:equal].include?(@next_token[:type])
+      if [:'='].include?(@next_token[:type])
         advance(2)
         rhs = expr
         node = NodeAssign.new(node, rhs)

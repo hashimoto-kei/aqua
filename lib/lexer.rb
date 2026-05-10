@@ -31,7 +31,7 @@ class Lexer
         @token = {type: :double_equal, value: nil}
       else
         @input.ungetc(c)
-        @token = {type: :equal, value: nil}
+        @token = {type: :'=', value: nil}
       end
     in '!'
       c = @input.getc
