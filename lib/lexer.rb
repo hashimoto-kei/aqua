@@ -106,7 +106,7 @@ class Lexer
 
   def skip_white_spaces
     c = @input.getc
-    while c !~ /\n/ && c =~ /\s/
+    while c != "\n" && c =~ /\s/
       c = @input.getc
     end
     @input.ungetc(c) unless c.nil?
@@ -114,7 +114,7 @@ class Lexer
 
   def skip_comment_line
     c = @input.getc
-    while c !~ /\n/
+    while c != "\n"
       c = @input.getc
     end
     @input.ungetc(c) unless c.nil?
@@ -123,9 +123,9 @@ class Lexer
   def skip_comment_lines
     loop do
       c = @input.getc
-      if c =~ /\*/
+      if c == '*'
         c = @input.getc
-        if c =~ /\//
+        if c == '/'
           break
         end
       end
@@ -151,8 +151,8 @@ class Lexer
     s = []
     loop do
       c = @input.getc
-      break if c =~ /"/
-      if c =~ /\\/
+      break if c == '"'
+      if c == '\\'
         c = @input.getc
       end
       s << c
