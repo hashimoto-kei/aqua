@@ -25,9 +25,9 @@ class NodeBinOp
       lhs * rhs
     in :/
       lhs / rhs
-    in :double_equal
+    in :eq
       lhs == rhs
-    in :not_equal
+    in :ne
       lhs != rhs
     in :ge
       lhs >= rhs
