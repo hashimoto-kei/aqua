@@ -22,16 +22,8 @@ class Lexer
     case c
     in nil
       @token = {type: :eof, value: nil}
-    in "\n"
-      @token = {type: :new_line, value: nil}
-    in '('
-      @token = {type: :left_p, value: nil}
-    in ')'
-      @token = {type: :right_p, value: nil}
-    in '{'
-      @token = {type: :left_b, value: nil}
-    in '}'
-      @token = {type: :right_b, value: nil}
+    in "\n" | '(' | ')' | '{' | '}' | '+' | '-' | '*'
+      @token = {type: c.to_sym, value: nil}
     in '='
       c = @input.getc
       case c
@@ -80,8 +72,6 @@ class Lexer
       in '|'
         @token = {type: :or, value: nil}
       end
-    in '+' | '-' | '*'
-      @token = {type: c.to_sym, value: nil}
     in '/'
       c = @input.getc
       case c
