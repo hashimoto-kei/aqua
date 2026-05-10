@@ -40,7 +40,7 @@ class Lexer
         @token = {type: :ne, value: nil}
       else
         @input.ungetc(c)
-        @token = {type: :not, value: nil}
+        @token = {type: :!, value: nil}
       end
     in '>'
       c = @input.getc
