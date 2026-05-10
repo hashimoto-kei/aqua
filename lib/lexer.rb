@@ -28,6 +28,10 @@ class Lexer
       @token = {type: :left_p, value: nil}
     in ')'
       @token = {type: :right_p, value: nil}
+    in '{'
+      @token = {type: :left_b, value: nil}
+    in '}'
+      @token = {type: :right_b, value: nil}
     in '='
       c = @input.getc
       case c

@@ -2,6 +2,7 @@
 
 require_relative 'node_assign'
 require_relative 'node_bin_op'
+require_relative 'node_block'
 require_relative 'node_empty'
 require_relative 'node_false'
 require_relative 'node_if_stmt'
@@ -70,12 +71,15 @@ class Parser
   # stmt: if_stmt
   #     | while_stmt
   #     | expr
+  #     | block
   def stmt
     case @token[:type]
     in :if
       node = if_stmt
     in :while
       node = while_stmt
+    in :left_b
+      node = block
     else
       node = expr
     end
@@ -109,6 +113,20 @@ class Parser
     advance(2)
     _then = stmt
     node = NodeWhileStmt.new(_cond, _then)
+  end
+
+  # block: { \n [stmt \n]* }
+  def block
+    syntax_assert([:left_b], @token)
+    syntax_assert([:new_line], @next_token)
+    advance(2)
+    stmts = []
+    until @token[:type] == :right_b
+      stmts << stmt
+      syntax_assert([:new_line], @next_token)
+      advance(2)
+    end
+    node = NodeBlock.new(stmts)
   end
 
   # expr: simple_expr
