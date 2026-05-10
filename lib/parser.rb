@@ -18,11 +18,10 @@ class Parser
     @lexer = lexer
     @token = nil
     @next_token = nil
-    advance
+    advance(2)
   end
 
   def parse
-    advance
     program
   end
 
@@ -64,8 +63,9 @@ class Parser
       node = stmt
       advance
       syntax_assert([:"\n", :eof], @token)
-      node
     end
+    advance
+    node
   end
 
   # stmt: if_stmt
