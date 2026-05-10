@@ -83,7 +83,7 @@ class Lexer
         advance
       else
         @input.ungetc(c)
-        @token = {type: :'/', value: nil}
+        @token = {type: :/, value: nil}
       end
     in /\d/
       @input.ungetc(c)
