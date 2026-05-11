@@ -3,7 +3,6 @@
 require_relative 'node_assign'
 require_relative 'node_bin_op'
 require_relative 'node_block'
-require_relative 'node_empty'
 require_relative 'node_false'
 require_relative 'node_if_stmt'
 require_relative 'node_int'
@@ -50,12 +49,7 @@ class Parser
   #        | \n
   #        | eof
   def program
-    case @token[:type]
-    in :"\n"
-      node = NodeEmpty.new
-    in :eof
-      node = NodeEmpty.new
-    else
+    unless [:"\n", :eof].include?(@token[:type])
       node = stmt
       syntax_assert([:"\n", :eof], @token)
     end
