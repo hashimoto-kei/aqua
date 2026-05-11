@@ -29,7 +29,8 @@ class Parser
 
   private
 
-  def advance
+  def advance(token=nil)
+    syntax_assert([token], @token) unless token.nil?
     @lexer.advance
     @token = @lexer.token
   end
@@ -77,13 +78,10 @@ class Parser
   # if_stmt: if ( expr ) stmt
   #        | if ( expr ) stmt else stmt
   def if_stmt
-    syntax_assert([:if], @token)
-    advance
-    syntax_assert([:'('], @token)
-    advance
+    advance(:if)
+    advance(:'(')
     _cond = expr
-    syntax_assert([:')'], @token)
-    advance
+    advance(:')')
     _then = stmt
     _else = nil
     if [:else].include?(@token[:type])
@@ -95,28 +93,22 @@ class Parser
 
   # while_stmt: while ( expr ) stmt
   def while_stmt
-    syntax_assert([:while], @token)
-    advance
-    syntax_assert([:'('], @token)
-    advance
+    advance(:while)
+    advance(:'(')
     _cond = expr
-    syntax_assert([:')'], @token)
-    advance
+    advance(:')')
     _then = stmt
     node = NodeWhileStmt.new(_cond, _then)
   end
 
   # block: { \n [stmt \n]* }
   def block
-    syntax_assert([:'{'], @token)
-    advance
-    syntax_assert([:"\n"], @token)
-    advance
+    advance(:'{')
+    advance(:"\n")
     stmts = []
     until @token[:type] == :'}'
       stmts << stmt
-      syntax_assert([:"\n"], @token)
-      advance
+      advance(:"\n")
     end
     advance
     node = NodeBlock.new(stmts)
@@ -201,8 +193,7 @@ class Parser
     in :'('
       advance
       node = expr
-      syntax_assert([:')'], @token)
-      advance
+      advance(:')')
     in :symbol
       node = NodeSymbol.intern(@token[:value])
       advance
