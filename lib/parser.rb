@@ -88,8 +88,9 @@ class Parser
   #        | if ( expr ) stmt else stmt
   def if_stmt
     syntax_assert([:if], @token)
-    syntax_assert([:'('], @next_token)
-    advance(2)
+    advance
+    syntax_assert([:'('], @token)
+    advance
     _cond = expr
     syntax_assert([:')'], @token)
     advance
@@ -105,8 +106,9 @@ class Parser
   # while_stmt: while ( expr ) stmt
   def while_stmt
     syntax_assert([:while], @token)
-    syntax_assert([:'('], @next_token)
-    advance(2)
+    advance
+    syntax_assert([:'('], @token)
+    advance
     _cond = expr
     syntax_assert([:')'], @token)
     advance
@@ -117,8 +119,9 @@ class Parser
   # block: { \n [stmt \n]* }
   def block
     syntax_assert([:'{'], @token)
-    syntax_assert([:"\n"], @next_token)
-    advance(2)
+    advance
+    syntax_assert([:"\n"], @token)
+    advance
     stmts = []
     until @token[:type] == :'}'
       stmts << stmt
