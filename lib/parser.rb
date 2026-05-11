@@ -197,7 +197,7 @@ class Parser
     in :symbol
       node = NodeSymbol.intern(@token[:value])
       advance
-      if [:'='].include?(@token[:type])
+      if @token[:type] == :'='
         advance
         rhs = expr
         node = NodeAssign.new(node, rhs)
