@@ -17,8 +17,7 @@ class Parser
   def initialize(lexer)
     @lexer = lexer
     @token = nil
-    @next_token = nil
-    advance(2)
+    advance
   end
 
   def parse
@@ -26,7 +25,7 @@ class Parser
   end
 
   def has_more_lines?
-    @next_token.nil? || @next_token[:type] != :eof
+    @token[:type] != :eof
   end
 
   private
@@ -34,8 +33,7 @@ class Parser
   def advance(n=1)
     n.times do
       @lexer.advance
-      @token = @next_token
-      @next_token = @lexer.token
+      @token = @lexer.token
     end
   end
 
