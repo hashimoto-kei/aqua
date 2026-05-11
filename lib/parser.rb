@@ -30,11 +30,9 @@ class Parser
 
   private
 
-  def advance(n=1)
-    n.times do
-      @lexer.advance
-      @token = @lexer.token
-    end
+  def advance
+    @lexer.advance
+    @token = @lexer.token
   end
 
   def syntax_assert(expected_token_types, actual_token)
