@@ -8,5 +8,6 @@ for x in test/script/*.aq
 do
     name=$(basename "$x" .aq)
     diff -u "test/expected/$name.txt" <(./aqua $x)
-    [ $? == 0 ] && printf "${GREEN}pass${RESET}: $x\n" || printf "${RED}fail${RESET}: $x\n"
+    [ $? == 0 ] && txt="${GREEN}pass${RESET}" || txt="${RED}fail${RESET}"
+    printf "${txt}: ${x}\n"
 done
