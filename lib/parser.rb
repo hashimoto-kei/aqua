@@ -59,8 +59,8 @@ class Parser
 
   # stmt: if_stmt
   #     | while_stmt
-  #     | expr
   #     | block
+  #     | expr
   def stmt
     case @token[:type]
     in :if
