@@ -74,7 +74,7 @@ class Parser
     advance(:')')
     _then = stmt
     _else = nil
-    if [:else].include?(@token[:type])
+    if @token[:type] == :else
       advance
       _else = stmt
     end
