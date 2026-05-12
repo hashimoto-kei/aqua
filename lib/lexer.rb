@@ -161,17 +161,17 @@ class Lexer
   end
 
   def lex_symbol
-    symbol = []
+    s = []
     loop do
       c = @input.getc
       case c
       in /\w/
-        symbol << c
+        s << c
       else
         @input.ungetc(c)
         break
       end
     end
-    symbol.join.to_sym
+    s.join.to_sym
   end
 end
