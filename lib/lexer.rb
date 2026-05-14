@@ -7,6 +7,7 @@ class Lexer
     :if,
     :else,
     :while,
+    :def,
   ]
 
   attr_reader :token
@@ -22,7 +23,7 @@ class Lexer
     case c
     in nil
       @token = {type: :eof, value: nil}
-    in "\n" | '(' | ')' | '{' | '}' | '+' | '-' | '*'
+    in "\n" | '(' | ')' | '{' | '}' | '+' | '-' | '*' | ','
       @token = {type: c.to_sym, value: nil}
     in '='
       c = @input.getc
