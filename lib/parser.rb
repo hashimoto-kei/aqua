@@ -52,6 +52,7 @@ class Parser
   #     | while_stmt
   #     | block
   #     | expr
+  #     | func_def
   def stmt
     case @token[:type]
     in :if
@@ -60,6 +61,8 @@ class Parser
       node = while_stmt
     in :'{'
       node = block
+    in :def
+      node = func_def
     else
       node = expr
     end
@@ -102,6 +105,27 @@ class Parser
     end
     advance
     node = NodeBlock.new(stmts)
+  end
+
+  # func_def: def symbol ( [symbol [, symbol]*]? ) block
+  def func_def
+    advance(:def)
+    func = @token[:value]
+    advance(:symbol)
+    advance(:'(')
+    args = []
+    unless @token[:type] == :')'
+      args << @token[:value]
+      advance(:symbol)
+      until @token[:type] == :')'
+        advance(:',')
+        args << @token[:value]
+        advance(:symbol)
+      end
+    end
+    advance(:')')
+    body = block
+    node = NodeFuncDef.new(func, args, body)
   end
 
   # expr: simple_expr
@@ -161,6 +185,7 @@ class Parser
   #       | ( expr )
   #       | symbol
   #       | symbol = expr
+  #       | symbol ( [expr [, expr]*]? )
   def factor
     case @token[:type]
     in :int
@@ -191,6 +216,18 @@ class Parser
         advance
         rhs = expr
         node = NodeAssign.new(node, rhs)
+      elsif @token[:type] == :'('
+        advance
+        exprs = []
+        unless @token[:type] == :')'
+          exprs << expr
+          until @token[:type] == :')'
+            advance(:',')
+            exprs << expr
+          end
+        end
+        advance
+        node = NodeFuncCall.new(node.to_sym, exprs)
       end
     end
     node
