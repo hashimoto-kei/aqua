@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'call_stack'
-require_relative 'symbol_table'
+require_relative 'symbol_resolver'
 
 class NodeFuncDef
   def initialize(func_name, arg_names, body)
@@ -11,7 +11,7 @@ class NodeFuncDef
   end
 
   def eval
-    SymbolTable.set(@func_name, self)
+    SymbolResolver.set(@func_name, self)
     nil
   end
 
