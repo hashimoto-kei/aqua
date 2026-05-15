@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'symbol_resolver'
+
 class NodeFuncCall
   def initialize(func_name, args)
     @func_name = func_name
@@ -7,7 +9,7 @@ class NodeFuncCall
   end
 
   def eval
-    func = SymbolTable.get(@func_name)
+    func = SymbolResolver.get(@func_name)
     if func.nil?
       raise "Runtime Error. undifined function: #{@func_name}"
     end

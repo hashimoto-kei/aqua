@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'symbol_table'
+require_relative 'symbol_resolver'
 
 class NodeSymbol
   @@created = {}
@@ -19,7 +19,7 @@ class NodeSymbol
   end
 
   def eval
-    value = SymbolTable.get(@symbol)
+    value = SymbolResolver.get(@symbol)
     if value.nil?
       raise "Runtime Error. undifined symbol: #{@symbol}"
     end
