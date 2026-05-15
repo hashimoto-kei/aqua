@@ -7,7 +7,7 @@ RESET='\033[0m'
 for x in test/script/*.aq
 do
     name=$(basename "$x" .aq)
-    diff -u "test/expected/$name.txt" <(./aqua $x)
+    diff -u "test/expected/$name.txt" <(./aqua -v $x)
     [ $? == 0 ] && txt="${GREEN}pass${RESET}" || txt="${RED}fail${RESET}"
     printf "${txt}: ${x}\n"
 done

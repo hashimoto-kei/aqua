@@ -4,16 +4,17 @@ require_relative 'lexer'
 require_relative 'parser'
 
 class Interpreter
-  def initialize(path)
+  def initialize(path, options)
     @lexer = Lexer.new(path)
     @parser = Parser.new(@lexer)
+    @options = options
   end
 
   def execute
     while @parser.has_more_lines?
       node = @parser.parse
       result = node&.eval
-      puts result unless result.nil?
+      puts result if @options[:v] && !result.nil?
     end
   ensure
     @lexer.close
