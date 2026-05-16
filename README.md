@@ -1,6 +1,6 @@
-# aqua
+# Aqua
 
-aqua is a small interpreted programming language implemented in Ruby.
+Aqua is a small interpreted programming language implemented in Ruby.
 
 # Requirements
 
