@@ -1,0 +1,13 @@
+p(1 + 3)
+
+def f(n) {
+  if (n == 0) {
+    ret = 1
+  } else {
+    ret = n * f(n - 1)
+  }
+  p(ret)
+  ret
+}
+
+f(10)
