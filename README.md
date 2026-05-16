@@ -19,28 +19,25 @@ def f(n) {
   }
 }
 
-f(1)
-f(2)
-f(3)
-f(4)
-f(5)
-f(6)
-f(7)
-f(8)
-f(9)
-f(10)
+x = 0
+while (x <= 10) {
+  y = f(x)
+  x = x + 1
+  p(y)
+}
 ```
 
 Then run it like this:
 
 ```bash
-./aqua -v factorial.aq
+./aqua factorial.aq
 ```
 
 Output:
 
 ```
-❯ ./aqua -v factorial.aq
+❯ ./aqua factorial.aq
+1
 1
 2
 6
