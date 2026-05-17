@@ -148,30 +148,46 @@ class Parser
 
   # simple_expr: term
   #            | term + simple_expr
-  #            | term - simple_expr
+  #            | term [- term]+
   #            | term || simple_expr
   def simple_expr
     node = term
-    if [:+, :-, :or].include?(@token[:type])
+    if [:+, :or].include?(@token[:type])
       op = @token[:type]
       advance
       rhs = simple_expr
       node = NodeBinOp.new(op, node, rhs)
+    elsif @token[:type] == :-
+      loop do
+        op = @token[:type]
+        advance
+        rhs = term
+        node = NodeBinOp.new(op, node, rhs)
+        break unless @token[:type] == :-
+      end
     end
     node
   end
 
   # term: factor
   #     | factor * term
-  #     | factor / term
+  #     | factor [/ factor]+
   #     | factor && term
   def term
     node = factor
-    if [:*, :/, :and].include?(@token[:type])
+    if [:*, :and].include?(@token[:type])
       op = @token[:type]
       advance
       rhs = term
       node = NodeBinOp.new(op, node, rhs)
+    elsif @token[:type] == :/
+      loop do
+        op = @token[:type]
+        advance
+        rhs = factor
+        node = NodeBinOp.new(op, node, rhs)
+        break unless @token[:type] == :/
+      end
     end
     node
   end
