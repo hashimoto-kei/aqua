@@ -15,7 +15,7 @@ def f(n) {
   if (n == 0) {
     1
   } else {
-    n * f(n -1)
+    n * f(n - 1)
   }
 }
 
