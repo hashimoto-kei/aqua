@@ -35,10 +35,7 @@ class Parser
     raise "Syntax Error. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
   end
 
-  # program: stmt \n
-  #        | stmt eof
-  #        | \n
-  #        | eof
+  # program: [stmt] ('\n' | eof)
   def program
     unless [:"\n", :eof].include?(@token[:type])
       node = stmt
@@ -67,8 +64,7 @@ class Parser
     end
   end
 
-  # if_stmt: if ( expr ) stmt
-  #        | if ( expr ) stmt else stmt
+  # if_stmt: if '(' expr ')' stmt [else stmt]
   def if_stmt
     advance(:if)
     advance(:'(')
@@ -83,7 +79,7 @@ class Parser
     node = NodeIfStmt.new(_cond, _then, _else)
   end
 
-  # while_stmt: while ( expr ) stmt
+  # while_stmt: while '(' expr ')' stmt
   def while_stmt
     advance(:while)
     advance(:'(')
@@ -93,7 +89,7 @@ class Parser
     node = NodeWhileStmt.new(_cond, _then)
   end
 
-  # block: { \n [stmt \n]* }
+  # block: '{' '\n' [stmt '\n']* '}'
   def block
     advance(:'{')
     advance(:"\n")
@@ -106,7 +102,7 @@ class Parser
     node = NodeBlock.new(stmts)
   end
 
-  # func_def: def symbol ( [symbol [, symbol]*]? ) block
+  # func_def: def symbol '(' [symbol [, symbol]*] ')' block
   def func_def
     advance(:def)
     func = @token[:value]
@@ -128,12 +124,12 @@ class Parser
   end
 
   # expr: simple_expr
-  #     | simple_expr == expr
-  #     | simple_expr != expr
-  #     | simple_expr >= expr
-  #     | simple_expr >  expr
-  #     | simple_expr <= expr
-  #     | simple_expr <  expr
+  #     | simple_expr '==' expr
+  #     | simple_expr '!=' expr
+  #     | simple_expr '>=' expr
+  #     | simple_expr '>'  expr
+  #     | simple_expr '<=' expr
+  #     | simple_expr '<'  expr
   def expr
     node = simple_expr
     if [:eq, :ne, :ge, :gt, :le, :lt].include?(@token[:type])
@@ -146,9 +142,9 @@ class Parser
   end
 
   # simple_expr: term
-  #            | term + simple_expr
-  #            | term [- term]+
-  #            | term || simple_expr
+  #            | term '+' simple_expr
+  #            | term ['-' term]+
+  #            | term '||' simple_expr
   def simple_expr
     node = term
     if [:+, :or].include?(@token[:type])
@@ -169,9 +165,9 @@ class Parser
   end
 
   # term: factor
-  #     | factor * term
-  #     | factor [/ factor]+
-  #     | factor && term
+  #     | factor '*' term
+  #     | factor ['/' factor]+
+  #     | factor '&&' term
   def term
     node = factor
     if [:*, :and].include?(@token[:type])
@@ -195,12 +191,12 @@ class Parser
   #       | string
   #       | true
   #       | false
-  #       | - factor
-  #       | ! factor
-  #       | ( expr )
+  #       | '-' factor
+  #       | '!' factor
+  #       | '(' expr ')'
   #       | symbol
-  #       | symbol = expr
-  #       | symbol ( [expr [, expr]*]? )
+  #       | symbol '=' expr
+  #       | symbol '(' [expr [, expr]*] ')'
   def factor
     case @token[:type]
     in :int
