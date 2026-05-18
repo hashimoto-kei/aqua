@@ -47,8 +47,8 @@ class Parser
   # stmt: if_stmt
   #     | while_stmt
   #     | block
-  #     | expr
   #     | func_def
+  #     | expr
   def stmt
     case @token[:type]
     in :if
@@ -142,8 +142,7 @@ class Parser
   end
 
   # simple_expr: term
-  #            | term ['+' term]+
-  #            | term ['-' term]+
+  #            | term [('+' | '-') term]+
   #            | term '||' simple_expr
   def simple_expr
     node = term
@@ -165,8 +164,7 @@ class Parser
   end
 
   # term: factor
-  #     | factor ['*' factor]+
-  #     | factor ['/' factor]+
+  #     | factor [('*' | '/') factor]+
   #     | factor '&&' term
   def term
     node = factor
