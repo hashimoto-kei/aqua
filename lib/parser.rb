@@ -142,23 +142,23 @@ class Parser
   end
 
   # simple_expr: term
-  #            | term '+' simple_expr
+  #            | term ['+' term]+
   #            | term ['-' term]+
   #            | term '||' simple_expr
   def simple_expr
     node = term
-    if [:+, :or].include?(@token[:type])
+    if [:or].include?(@token[:type])
       op = @token[:type]
       advance
       rhs = simple_expr
       node = NodeBinOp.new(op, node, rhs)
-    elsif @token[:type] == :-
+    elsif [:+, :-].include?(@token[:type])
       loop do
         op = @token[:type]
         advance
         rhs = term
         node = NodeBinOp.new(op, node, rhs)
-        break unless @token[:type] == :-
+        break unless [:+, :-].include?(@token[:type])
       end
     end
     node
