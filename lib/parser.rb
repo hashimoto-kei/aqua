@@ -19,8 +19,8 @@ class Parser
 
   private
 
-  def advance(token=nil)
-    syntax_assert([token], @token) unless token.nil?
+  def advance(*tokens)
+    syntax_assert(tokens, @token) unless tokens.empty?
     @lexer.advance
     @token = @lexer.token
   end
@@ -42,9 +42,8 @@ class Parser
   def program
     unless [:"\n", :eof].include?(@token[:type])
       node = stmt
-      syntax_assert([:"\n", :eof], @token)
     end
-    advance
+    advance(:"\n", :eof)
     node
   end
 
