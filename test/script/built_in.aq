@@ -11,3 +11,22 @@ def f(n) {
 }
 
 f(10)
+
+def fizzbuzz(n) {
+  if (n / 15 * 15 == n) {
+    "fizzbuzz"
+  } else if (n / 3 * 3 == n) {
+    "fizz"
+  } else if (n / 5 * 5 == n) {
+    "buzz"
+  } else {
+    n
+  }
+}
+
+x = 1
+while (x <= 15) {
+  y = fizzbuzz(x)
+  p(y)
+  x = x + 1
+}
