@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'nodes/node'
+require_relative 'node/node'
 
 class Parser
   def initialize(lexer)
