@@ -11,7 +11,7 @@ class Interpreter
   end
 
   def execute
-    while @parser.has_more_lines?
+    while @parser.more_tokens?
       node = @parser.parse
       result = node&.eval
       puts result if @options[:verbose] && !result.nil?

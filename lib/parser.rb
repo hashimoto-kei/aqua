@@ -13,7 +13,7 @@ class Parser
     program
   end
 
-  def has_more_lines?
+  def more_tokens?
     @token[:type] != :eof
   end
 
