@@ -22,56 +22,56 @@ class Lexer
     c = @input.getc
     case c
     in nil
-      @token = {type: :eof, value: nil}
+      @token = generate_token(:eof, nil)
     in "\n" | '(' | ')' | '{' | '}' | '+' | '-' | '*' | ','
-      @token = {type: c.to_sym, value: nil}
+      @token = generate_token(c.to_sym, nil)
     in '='
       c = @input.getc
       case c
       in '='
-        @token = {type: :eq, value: nil}
+        @token = generate_token(:eq, nil)
       else
         @input.ungetc(c)
-        @token = {type: :'=', value: nil}
+        @token = generate_token(:'=', nil)
       end
     in '!'
       c = @input.getc
       case c
       in '='
-        @token = {type: :ne, value: nil}
+        @token = generate_token(:ne, nil)
       else
         @input.ungetc(c)
-        @token = {type: :!, value: nil}
+        @token = generate_token(:!, nil)
       end
     in '>'
       c = @input.getc
       case c
       in '='
-        @token = {type: :ge, value: nil}
+        @token = generate_token(:ge, nil)
       else
         @input.ungetc(c)
-        @token = {type: :gt, value: nil}
+        @token = generate_token(:gt, nil)
       end
     in '<'
       c = @input.getc
       case c
       in '='
-        @token = {type: :le, value: nil}
+        @token = generate_token(:le, nil)
       else
         @input.ungetc(c)
-        @token = {type: :lt, value: nil}
+        @token = generate_token(:lt, nil)
       end
     in '&'
       c = @input.getc
       case c
       in '&'
-        @token = {type: :and, value: nil}
+        @token = generate_token(:and, nil)
       end
     in '|'
       c = @input.getc
       case c
       in '|'
-        @token = {type: :or, value: nil}
+        @token = generate_token(:or, nil)
       end
     in '/'
       c = @input.getc
@@ -84,18 +84,18 @@ class Lexer
         advance
       else
         @input.ungetc(c)
-        @token = {type: :/, value: nil}
+        @token = generate_token(:/, nil)
       end
     in /\d/
       @input.ungetc(c)
-      @token = {type: :int, value: lex_digit}
+      @token = generate_token(:int, lex_digit)
     in '"'
-      @token = {type: :string, value: lex_string}
+      @token = generate_token(:string, lex_string)
     in /\w/
       @input.ungetc(c)
       symbol = lex_symbol
       type, value = RESERVED_WORDS.include?(symbol) ? [symbol, nil] : [:symbol, symbol]
-      @token = {type: type, value: value}
+      @token = generate_token(type, value)
     end
   end
 
@@ -104,6 +104,10 @@ class Lexer
   end
 
   private
+
+  def generate_token(type, value)
+    {type: type, value: value}
+  end
 
   def skip_white_spaces
     c = @input.getc
