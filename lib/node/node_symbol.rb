@@ -21,7 +21,8 @@ class NodeSymbol
   def eval
     value = SymbolResolver.get(@symbol)
     if value.nil?
-      raise "Runtime Error. undifined symbol: #{@symbol}"
+      puts "Runtime Error. undifined symbol: #{@symbol}"
+      exit 1
     end
     value
   end
