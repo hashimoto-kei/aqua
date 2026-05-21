@@ -32,7 +32,8 @@ class Parser
   end
 
   def syntax_error(expected_token_types, actual_token)
-    raise "Syntax Error. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type]}, actual_token_value: #{actual_token[:value]}"
+    puts "Syntax Error. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type].inspect}, actual_token_value: #{actual_token[:value].inspect}"
+    exit 1
   end
 
   # program: [stmt] ('\n' | eof)
