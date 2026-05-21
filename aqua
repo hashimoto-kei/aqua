@@ -4,6 +4,6 @@
 require 'optparse'
 require_relative 'lib/interpreter'
 
-options = ARGV.getopts('v', symbolize_names: true)
+options = ARGV.getopts('', 'verbose', symbolize_names: true)
 path = ARGV[0]
 Interpreter.new(path, options).execute
