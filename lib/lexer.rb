@@ -15,6 +15,7 @@ class Lexer
   def initialize(path)
     @input = File.open(path)
     @token = nil
+    @line = 0
   end
 
   def advance
@@ -24,6 +25,7 @@ class Lexer
     in nil
       @token = generate_token(:eof, nil)
     in "\n" | '(' | ')' | '{' | '}' | '+' | '-' | '*' | ','
+      @line += 1 if c == "\n"
       @token = generate_token(c.to_sym, nil)
     in '='
       c = @input.getc
@@ -106,7 +108,7 @@ class Lexer
   private
 
   def generate_token(type, value)
-    {type: type, value: value}
+    {type: type, value: value, line: @line}
   end
 
   def skip_white_spaces
