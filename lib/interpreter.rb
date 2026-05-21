@@ -14,7 +14,7 @@ class Interpreter
     while @parser.has_more_lines?
       node = @parser.parse
       result = node&.eval
-      puts result if @options[:v] && !result.nil?
+      puts result if @options[:verbose] && !result.nil?
     end
   ensure
     @lexer.close
