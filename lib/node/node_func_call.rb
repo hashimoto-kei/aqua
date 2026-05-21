@@ -11,7 +11,8 @@ class NodeFuncCall
   def eval
     func = SymbolResolver.get(@func_name)
     if func.nil?
-      raise "Runtime Error. undifined function: #{@func_name}"
+      puts "Runtime Error. undifined function: #{@func_name}"
+      exit 1
     end
     args = @args.map(&:eval)
     func.call(args)
