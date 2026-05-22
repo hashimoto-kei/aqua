@@ -20,12 +20,12 @@ class Parser
   private
 
   def advance(*tokens)
-    syntax_assert(tokens, @token) unless tokens.empty?
+    assert(tokens, @token) unless tokens.empty?
     @lexer.advance
     @token = @lexer.token
   end
 
-  def syntax_assert(expected_tokens, actual_token)
+  def assert(expected_tokens, actual_token)
     unless expected_tokens.include?(actual_token[:type])
       syntax_error(expected_tokens, actual_token)
     end
