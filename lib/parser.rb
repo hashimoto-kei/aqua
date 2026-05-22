@@ -25,14 +25,14 @@ class Parser
     @token = @lexer.token
   end
 
-  def syntax_assert(expected_token_types, actual_token)
-    unless expected_token_types.include?(actual_token[:type])
-      syntax_error(expected_token_types, actual_token)
+  def syntax_assert(expected_tokens, actual_token)
+    unless expected_tokens.include?(actual_token[:type])
+      syntax_error(expected_tokens, actual_token)
     end
   end
 
-  def syntax_error(expected_token_types, actual_token)
-    puts "Syntax Error at line #{actual_token[:line]}. expected_token_types: #{expected_token_types}, actual_token_type: #{actual_token[:type].inspect}, actual_token_value: #{actual_token[:value].inspect}"
+  def syntax_error(expected_tokens, actual_token)
+    puts "Syntax Error at line #{actual_token[:line]}. expected_tokens: #{expected_tokens}, actual_token_type: #{actual_token[:type].inspect}, actual_token_value: #{actual_token[:value].inspect}"
     exit 1
   end
 
