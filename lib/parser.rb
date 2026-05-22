@@ -13,8 +13,8 @@ class Parser
     program
   end
 
-  def more_tokens?
-    @token[:type] != :eof
+  def eof?
+    @token[:type] == :eof
   end
 
   private
