@@ -2,16 +2,15 @@
 
 require_relative 'node_func_def'
 require_relative 'symbol_resolver'
-require_relative 'symbol_table'
 
 class BuiltIn
   def self.setup
-    SymbolTable.set(:p, self.p)
+    self.setup_p
   end
 
   private
 
-  def self.p
+  def self.setup_p
     func = Class.new do
       def eval
         x = SymbolResolver.get(:x)
@@ -19,6 +18,6 @@ class BuiltIn
         nil
       end
     end
-    NodeFuncDef.new(:p, [:x], func.new)
+    NodeFuncDef.new(:p, [:x], func.new).eval
   end
 end
