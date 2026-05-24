@@ -142,8 +142,7 @@ class Parser
     node
   end
 
-  # simple_expr: term
-  #            | term [('+' | '-' | '||') term]+
+  # simple_expr: term [('+' | '-' | '||') term]*
   def simple_expr
     node = term
     while [:+, :-, :or].include?(@token[:type])
