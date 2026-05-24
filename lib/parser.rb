@@ -154,24 +154,14 @@ class Parser
     node
   end
 
-  # term: factor
-  #     | factor [('*' | '/') factor]+
-  #     | factor '&&' term
+  # term: factor [('*' | '/' | '&&') factor]*
   def term
     node = factor
-    if [:and].include?(@token[:type])
+    while [:*, :/, :and].include?(@token[:type])
       op = @token[:type]
       advance
-      rhs = term
+      rhs = factor
       node = NodeBinOp.new(op, node, rhs)
-    elsif [:*, :/].include?(@token[:type])
-      loop do
-        op = @token[:type]
-        advance
-        rhs = factor
-        node = NodeBinOp.new(op, node, rhs)
-        break unless [:*, :/].include?(@token[:type])
-      end
     end
     node
   end
