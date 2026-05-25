@@ -130,6 +130,7 @@ class Lexer
   def skip_comment_lines
     loop do
       c = @input.getc
+      @line += 1 if c == "\n"
       if c == '*'
         c = @input.getc
         if c == '/'
