@@ -202,11 +202,12 @@ class Parser
     in :symbol
       node = NodeSymbol.intern(@token[:value])
       advance
-      if @token[:type] == :'='
+      case @token[:type]
+      in :'='
         advance
         rhs = expr
         node = NodeAssign.new(node, rhs)
-      elsif @token[:type] == :'('
+      in :'('
         advance
         exprs = []
         unless @token[:type] == :')'
@@ -218,6 +219,8 @@ class Parser
         end
         advance
         node = NodeFuncCall.new(node.to_sym, exprs)
+      else
+        # do nothing
       end
     end
     node
