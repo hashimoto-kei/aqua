@@ -6,6 +6,7 @@ require_relative 'symbol_resolver'
 class BuiltIn
   def self.setup
     self.setup_p
+    self.setup_puts
   end
 
   private
@@ -19,5 +20,16 @@ class BuiltIn
       end
     end
     NodeFuncDef.new(:p, [:x], func.new).eval
+  end
+
+  def self.setup_puts
+    func = Class.new do
+      def eval
+        x = SymbolResolver.get(:x)
+        puts x
+        nil
+      end
+    end
+    NodeFuncDef.new(:puts, [:x], func.new).eval
   end
 end
