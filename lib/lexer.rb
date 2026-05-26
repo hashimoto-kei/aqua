@@ -133,6 +133,7 @@ class Lexer
       @line += 1 if c == "\n"
       if c == '*'
         c = @input.getc
+        @line += 1 if c == "\n"
         if c == '/'
           break
         end
