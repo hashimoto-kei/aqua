@@ -30,3 +30,7 @@ while (x <= 15) {
   p(y)
   x = x + 1
 }
+
+m = "Hello, world!"
+puts(m)
+p(m)
