@@ -15,7 +15,7 @@ class Lexer
   def initialize(path)
     @input = File.open(path)
     @token = nil
-    @line = 0
+    @line = 1
   end
 
   def advance
