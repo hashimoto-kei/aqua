@@ -20,6 +20,6 @@ class CallStack
   end
 
   def self.exist?(symbol)
-    !@@stack.empty? && !@@stack.last[symbol].nil?
+    !@@stack.empty? && @@stack.last.has_key?(symbol)
   end
 end

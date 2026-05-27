@@ -19,12 +19,11 @@ class NodeSymbol
   end
 
   def eval
-    value = SymbolResolver.get(@symbol)
-    if value.nil?
+    unless SymbolResolver.exist?(@symbol)
       puts "Runtime Error. undifined symbol: #{@symbol}"
       exit 1
     end
-    value
+    SymbolResolver.get(@symbol)
   end
 
   def to_sym

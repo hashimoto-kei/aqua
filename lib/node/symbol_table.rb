@@ -10,4 +10,8 @@ class SymbolTable
   def self.get(symbol)
     @@table[symbol]
   end
+
+  def self.exist?(symbol)
+    @@table.has_key?(symbol)
+  end
 end

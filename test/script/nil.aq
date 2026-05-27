@@ -1,1 +1,6 @@
 p(nil)
+x = 1
+def f(x) {
+  p(x)
+}
+f(nil)

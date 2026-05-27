@@ -13,4 +13,8 @@ class SymbolResolver
     klass = CallStack.exist?(symbol) ? CallStack : SymbolTable
     klass.get(symbol)
   end
+
+  def self.exist?(symbol)
+    CallStack.exist?(symbol) || SymbolTable.exist?(symbol)
+  end
 end
