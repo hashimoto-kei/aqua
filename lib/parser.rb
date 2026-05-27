@@ -170,6 +170,7 @@ class Parser
   #       | string
   #       | true
   #       | false
+  #       | nil
   #       | '-' factor
   #       | '!' factor
   #       | '(' expr ')'
@@ -189,6 +190,9 @@ class Parser
       advance
     in :false
       node = NodeFalse.instance
+      advance
+    in :nil
+      node = NodeNil.instance
       advance
     in :- | :!
       op = @token[:type]
