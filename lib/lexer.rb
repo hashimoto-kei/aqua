@@ -8,6 +8,7 @@ class Lexer
     :else,
     :while,
     :def,
+    :nil,
   ]
 
   attr_reader :token
