@@ -7,8 +7,8 @@ class NodeBlock
 
   def eval
     ret = nil
-    @stmts.each do |node|
-      ret = node.eval
+    @stmts.each do |stmt|
+      ret = stmt.eval
     end
     ret
   end
