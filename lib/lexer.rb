@@ -25,8 +25,10 @@ class Lexer
     case c
     in nil
       @token = generate_token(:eof, nil)
-    in "\n" | '(' | ')' | '{' | '}' | '+' | '-' | '*' | ','
-      @line += 1 if c == "\n"
+    in '(' | ')' | '{' | '}' | '+' | '-' | '*' | ','
+      @token = generate_token(c.to_sym, nil)
+    in "\n"
+      @line += 1
       @token = generate_token(c.to_sym, nil)
     in '='
       c = @input.getc
